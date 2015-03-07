@@ -6,6 +6,4 @@
 (deftest proof-checker-tests
   (testing "axiom recognition"
     (is (=
-         true
-         false))))
-;;         (is-proof-correct? (proof (list (imp (v "p") (imp (v "q") (v "p"))))))))))
+         (is-pc? (proof (list (imp (v "p") (imp (v "q") (v "p"))))))))))

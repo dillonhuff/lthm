@@ -2,7 +2,7 @@
   (:gen-class))
 
 (defn proof [statements]
-  nil)
+  '())
 
-(defn is-proof-correct? [pf]
+(defn is-pc? [pf]
   false)

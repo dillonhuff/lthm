@@ -28,6 +28,9 @@
 (defn pred [name term-list]
   (struct predicate 'predicate name term-list))
 
+(defn imp [left right]
+  (struct binop 'implication left right))
+
 ;; Type testing
 
 (defn- type-is? [t obj]

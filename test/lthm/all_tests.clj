@@ -6,4 +6,4 @@
             [lthm.tiny-test :refer :all]))
 
 ;(run-tests 'lthm.core-test
-(run-tests 'lthm.tiny-test)
+(run-tests 'lthm.core-test 'lthm.proof-checker-test)
