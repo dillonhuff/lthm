@@ -36,13 +36,12 @@
 (defn v? [obj]
   (type-is? 'variable obj))
 
-(defn term? [obj]
-  (or (v? obj)
-      (func? obj)))
-
 (defn func? [obj]
   (type-is? 'function obj))
 
 (defn pred? [obj]
   (type-is? 'predicate obj))
 
+(defn term? [obj]
+  (or (v? obj)
+      (func? obj)))
