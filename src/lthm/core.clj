@@ -1,9 +1,18 @@
 (ns lthm.core
   (:gen-class))
 
+;; Term creation
 (defstruct variable :type :name)
 
 (defstruct function :type :name :args)
+
+(defstruct predicate :type :name :args)
+
+(defstruct binop :type :left :right)
+
+(defstruct unop :type :arg)
+
+(defstruct quantifier :type :variable :arg)
 
 (defn- datatype [core-struct]
   (:type core-struct))
@@ -14,9 +23,26 @@
 (defn func [name args]
   (struct function 'function name args))
 
+;; Formula creation
+
+(defn pred [name term-list]
+  (struct predicate 'predicate name term-list))
+
 ;; Type testing
+
+(defn- type-is? [t obj]
+  (= (datatype obj) t))
+
 (defn v? [obj]
-  (= (datatype obj) 'variable))
+  (type-is? 'variable obj))
+
+(defn term? [obj]
+  (or (v? obj)
+      (func? obj)))
 
 (defn func? [obj]
-  (= (datatype obj) 'function))
+  (type-is? 'function obj))
+
+(defn pred? [obj]
+  (type-is? 'predicate obj))
+
