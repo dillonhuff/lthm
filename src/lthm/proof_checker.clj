@@ -28,7 +28,7 @@
 (defn proof [outline]
   (if (= 0 (count (:already-proved outline)))
     (empty-proof)
-    (proof-check-result 'succeeded (reverse (:already-proved outline)))))
+    (struct proof-check-result 'succeeded (reverse (:already-proved outline)))))
 
 (defn proof-construction-failed? [res]
   (= (:result res) 'failed))
@@ -44,7 +44,7 @@
     true
     false))
 
-(defn build-ax1 [form]
+(defn build-ax-pqp [form]
   (if (implication? form)
     (let [p (left form)
           qImpP (right form)]
@@ -57,10 +57,18 @@
         (failed-thm form)))
     (failed-thm form)))
 
+(defn build-ax-eql [form]
+  (if (eql? form)
+    (if (= (pred-arg form 0) (pred-arg form 1))
+      (ax-eql (pred-arg form 0))
+      (failed-thm form))
+    (failed-thm form)))
+
 ;; Axiom construction
 (def fol-axiom-builders
   (list
-   build-ax1))
+   build-ax-eql
+   build-ax-pqp))
 
 (defn make-fol-axiom [formula]
   (seq-thm-builder fol-axiom-builders formula))

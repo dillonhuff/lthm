@@ -4,7 +4,7 @@
 
 (defn seq-thm-builder [thm-builders form]
   (if (= 0 (count thm-builders))
-    (failed-thm form)
+    (failed-thm 'no-builders-succeeded)
     (let [res (apply (peek thm-builders) (list form))]
       (if (thm? res)
         res

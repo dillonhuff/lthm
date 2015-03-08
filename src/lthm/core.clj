@@ -37,17 +37,25 @@
   (struct function 'function name args))
 
 ;; Formula creation
-
 (defn pred [name term-list]
   (struct predicate 'predicate name term-list))
+
+(defn pred-name [pred]
+  (:name pred))
+
+(defn pred-arguments [pred]
+  (:args pred))
+
+(defn pred-arg [term n]
+  (if (pred? term)
+    (nth (pred-arguments term) n)
+    "Error: Input to arg is not a predicate"))
 
 (defn imp [left right]
   (struct binop 'implication left right))
 
-;; Theorem creation
-(defn ax1 [p q]
-  (thm (imp p (imp p q))))
-
+(defn eql [left right]
+  (pred "eql" [left, right]))
 
 ;; Type testing
 
@@ -65,6 +73,9 @@
 
 (defn implication? [obj]
   (type-is? 'implication obj))
+
+(defn eql? [obj]
+  (and (pred? obj) (= (pred-name obj) "eql")))
 
 (defn- binop? [obj]
   (or (implication? obj)))
@@ -86,4 +97,13 @@
       (func? obj)))
 
 (defn thm? [obj]
-  (= (:res obj) 'thm))
+  (= (:res obj) 'succeeded))
+
+;; Theorem creation
+(defn ax-pqp [p q]
+  (thm (imp p (imp p q))))
+
+(defn ax-eql [t]
+  (if (term? t)
+    (thm (eql t t))
+    (failed-thm 'failed t)))
