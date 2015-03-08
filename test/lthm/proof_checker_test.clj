@@ -6,4 +6,12 @@
 (deftest proof-checker-tests
   (testing "axiom recognition"
     (is (=
-         (is-pc? (proof (list (imp (v "p") (imp (v "q") (v "p"))))))))))
+         (proof? (claimed-proof (list (imp (pred "p" []) (imp (pred "q" []) (pred "p" []))))))
+         true))
+    (is (=
+         (proof? (claimed-proof (list (pred "f" []))))
+         false))
+
+    (is (=
+         (proof? (claimed-proof '()))
+         true))))
