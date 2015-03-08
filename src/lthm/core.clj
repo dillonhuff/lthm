@@ -11,12 +11,21 @@
 (defstruct unop :type :arg)
 (defstruct quantifier :type :variable :arg)
 
+(defn left [bop]
+  (:left bop))
+
+(defn right [bop]
+  (:right bop))
+
 ;; Theorem creation
 (defstruct theorem :res :formula)
-(defstruct failed-thm :res :fail-condition)
+(defstruct failed-theorem :res :fail-condition)
 
 (defn failed-thm [form]
-  (struct failed-thm 'failed form))
+  (struct failed-theorem 'failed form))
+
+(defn- thm [form]
+  (struct theorem 'succeeded form))
 
 (defn- datatype [core-struct]
   (:type core-struct))
@@ -36,6 +45,8 @@
   (struct binop 'implication left right))
 
 ;; Theorem creation
+(defn ax1 [p q]
+  (thm (imp p (imp p q))))
 
 
 ;; Type testing

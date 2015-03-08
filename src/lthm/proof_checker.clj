@@ -39,7 +39,29 @@
 (defn num-lines [pf]
   (count (:statements pf)))
 
+(defn tap [form]
+  (if (implication? form)
+    true
+    false))
+
+(defn build-ax1 [form]
+  (if (implication? form)
+    (let [p (left form)
+          qImpP (right form)]
+      (if (implication? qImpP)
+        (let [q (left qImpP)
+              other-p (right qImpP)]
+          (if (= other-p p)
+            (ax1 p q)
+            (failed-thm form)))
+        (failed-thm form)))
+    (failed-thm form)))
+
 ;; Axiom construction
+(def fol-axiom-builders
+  (list
+   build-ax1))
+
 (defn make-fol-axiom [formula]
   (seq-thm-builder fol-axiom-builders formula))
 
